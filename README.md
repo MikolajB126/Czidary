@@ -1,33 +1,73 @@
-zrob do tego logike:
-    <Window x:Class="SzyfrCezaraDesktop.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Szyfrowanie. Wykonane przez 123456" Height="450" Width="800"
-        Background="#5F9EA0">
-    <Grid Margin="20">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*" />
-            <ColumnDefinition Width="2*" />
-            <ColumnDefinition Width="1.5*" />
-        </Grid.ColumnDefinitions>
+using Microsoft.Win32;
+using System;
+using System.IO;
+using System.Text;
+using System.Windows;
 
-        <StackPanel Grid.Column="0">
-            <TextBlock Text="Podaj wartość klucza" Foreground="#FAEBD7" FontSize="16" Margin="0,0,0,10"/>
-            <TextBox x:Name="pole_klucz" Width="120" Height="30" Margin="0,0,0,20"/>
-            <TextBlock Text="Podaj tekst" Foreground="#FAEBD7" FontSize="16" Margin="0,0,0,10"/>
-            <TextBox x:Name="pole_tekst_wej" AcceptsReturn="True" TextWrapping="Wrap" Height="200"/>
-        </StackPanel>
+namespace SzyfrCezaraDesktop
+{
+    public partial class MainWindow : Window
+    {
+        public MainWindow()
+        {
+            InitializeComponent();
+        }
 
-        <StackPanel Grid.Column="1" HorizontalAlignment="Center">
-            <Button x:Name="przycisk_szyfruj" Content="Zaszyfruj" Width="60" Height="40" Background="#ADD8E6" Margin="0,200,10,15" Click="przycisk_szyfruj_Click"/>
-        </StackPanel>
+        private void przycisk_szyfruj_Click(object sender, RoutedEventArgs e)
+        {
+            if (!int.TryParse(pole_klucz.Text, out int klucz))
+            {
+                MessageBox.Show("Podaj poprawny klucz (liczba).");
+                return;
+            }
 
-        <StackPanel Grid.Column="2">
-            <TextBlock Text="Tekst zaszyfrowany" Foreground="#FAEBD7" FontSize="16" Margin="0,0,0,10" HorizontalAlignment="Center"/>
-            <Border BorderBrush="#FAEBD7" BorderThickness="2" CornerRadius="10" Margin="0,0,0,10">
-                <TextBox x:Name="pole_wynik" Background="Transparent" Foreground="#F0F8FF" IsReadOnly="True" BorderThickness="0" FontSize="14" TextWrapping="Wrap" Height="180" Width="250"/>
-            </Border>
-            <Button x:Name="przycisk_zapisz_plik" Content="Zapisz szyfr w pliku" Width="200" Height="40" Background="#ADD8E6" Click="przycisk_zapisz_plik_Click"/>
-        </StackPanel>
-    </Grid>
-</Window>
+            string tekst = pole_tekst_wej.Text;
+            if (string.IsNullOrWhiteSpace(tekst))
+            {
+                MessageBox.Show("Pole tekstu nie może być puste.");
+                return;
+            }
+
+            pole_wynik.Text = SzyfrujCezarem(tekst, klucz);
+        }
+
+        private string SzyfrujCezarem(string tekst, int klucz)
+        {
+            StringBuilder wynik = new StringBuilder();
+            foreach (char znak in tekst)
+            {
+                if (char.IsLetter(znak))
+                {
+                    char offset = char.IsUpper(znak) ? 'A' : 'a';
+                    char nowy = (char)(((znak + klucz - offset) % 26 + 26) % 26 + offset);
+                    wynik.Append(nowy);
+                }
+                else
+                {
+                    wynik.Append(znak);
+                }
+            }
+            return wynik.ToString();
+        }
+
+        private void przycisk_zapisz_plik_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(pole_wynik.Text))
+            {
+                MessageBox.Show("Brak szyfru do zapisania.");
+                return;
+            }
+
+            SaveFileDialog dialog = new SaveFileDialog();
+            dialog.Filter = "Plik tekstowy (*.txt)|*.txt";
+            dialog.FileName = "szyfr_cezara.txt";
+
+            if (dialog.ShowDialog() == true)
+            {
+                string zapis = "Tekst: " + pole_tekst_wej.Text + "\nKlucz: " + pole_klucz.Text + "\nSzyfr: " + pole_wynik.Text;
+                File.WriteAllText(dialog.FileName, zapis);
+                MessageBox.Show("Zapisano pomyślnie.");
+            }
+        }
+    }
+}
