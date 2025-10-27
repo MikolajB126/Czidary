@@ -1,4 +1,5 @@
-<Window x:Class="SzyfrCezaraDesktop.MainWindow"
+zrob do tego logike:
+    <Window x:Class="SzyfrCezaraDesktop.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Szyfrowanie. Wykonane przez 123456" Height="450" Width="800"
@@ -18,16 +19,15 @@
         </StackPanel>
 
         <StackPanel Grid.Column="1" HorizontalAlignment="Center">
-            <Button x:Name="przycisk_szyfruj" Content="Zaszyfruj" Width="160" Height="40" Background="#ADD8E6" Margin="0,0,0,15" Click="przycisk_szyfruj_Click"/>
+            <Button x:Name="przycisk_szyfruj" Content="Zaszyfruj" Width="60" Height="40" Background="#ADD8E6" Margin="0,200,10,15" Click="przycisk_szyfruj_Click"/>
+        </StackPanel>
+
+        <StackPanel Grid.Column="2">
             <TextBlock Text="Tekst zaszyfrowany" Foreground="#FAEBD7" FontSize="16" Margin="0,0,0,10" HorizontalAlignment="Center"/>
             <Border BorderBrush="#FAEBD7" BorderThickness="2" CornerRadius="10" Margin="0,0,0,10">
                 <TextBox x:Name="pole_wynik" Background="Transparent" Foreground="#F0F8FF" IsReadOnly="True" BorderThickness="0" FontSize="14" TextWrapping="Wrap" Height="180" Width="250"/>
             </Border>
-            <Button x:Name="przycisk_zapisz_plik" Content="Zapisz szyfr w pliku" Width="180" Height="40" Background="#ADD8E6" Click="przycisk_zapisz_plik_Click"/>
-        </StackPanel>
-
-        <StackPanel Grid.Column="2">
-            <Button x:Name="przycisk_zapisz_szyfr" Content="Zapisz szyfr" Width="150" Height="40" Background="#ADD8E6" Click="przycisk_zapisz_szyfr_Click"/>
+            <Button x:Name="przycisk_zapisz_plik" Content="Zapisz szyfr w pliku" Width="200" Height="40" Background="#ADD8E6" Click="przycisk_zapisz_plik_Click"/>
         </StackPanel>
     </Grid>
 </Window>
