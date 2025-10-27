@@ -1,20 +1,32 @@
-# Czidary
-Opis wyglądu aplikacji:
-‒ Tytuł okna „Szyfrowanie. Wykonane przez ”, dalej wstawiony numer zdającego
-‒ Kolor tła okna CadetBlue (#5F9EA0)
-‒ Kontrolki rozmieszczone zgodnie z obrazem 1, z określonym formatowaniem:
-‒ Napisy: „Podaj wartość klucza”, „Podaj tekst”, „Tekst zaszyfrowany” w kolorze czcionki
-AntiqueWhite (#FAEBD7)
-‒ Pole edycyjne do wprowadzania wartości klucza
-‒ Pole edycyjne wielowierszowe do wprowadzania tekstu z włączonym zawijaniem wierszy
-‒ Pole, w którym wyświetlony jest zaszyfrowany tekst o cechach:
-‒ Kolor czcionki AliceBlue (#F0F8FF)
-‒ Obramowanie: linia ciągła koloru AntiqueWhite (#FAEBD7), rogi zaokrąglone
-‒ Przyciski o kolorze tła LightBlue (#ADD8E6)
-Założenia dotyczące działania aplikacji:
-‒ Klucz szyfrowania i tekst szyfrowany są pobierane z odpowiednich kontrolek
-‒ Szyfrowanie odbywa się po wprowadzeniu tekstu i klucza i wybraniu przycisku „Zaszyfruj”
-‒ Jeżeli w polu przeznaczonym na wpisanie klucza nie została wpisana wartość liczbowa całkowita,
-po naciśnięciu przycisku, do szyfrowania, należy zastosować wartość klucza 0
-‒ Po wybraniu przycisku „Zapisz szyfr w pliku”, zostanie otwarte systemowe okno dialogowe (obraz
-3) do zapisu pliku. W pliku ma zostać zapisany zaszyfrowany tekst. 
+<Window x:Class="SzyfrCezaraDesktop.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Szyfrowanie. Wykonane przez 123456" Height="450" Width="600"
+        Background="#5F9EA0">
+    <Grid Margin="20">
+        <TextBlock Text="Podaj wartość klucza" Foreground="#FAEBD7"
+                   FontSize="16" Margin="10,10,0,0" HorizontalAlignment="Left"
+                   VerticalAlignment="Top"/>
+        <TextBox x:Name="pole_klucz" Width="100" Height="25"
+                 Margin="180,10,10,0" VerticalAlignment="Top"/>
+        <TextBlock Text="Podaj tekst" Foreground="#FAEBD7"
+                   FontSize="16" Margin="10,50,0,0" HorizontalAlignment="Left"
+                   VerticalAlignment="Top"/>
+        <TextBox x:Name="pole_tekst_wej" AcceptsReturn="True" TextWrapping="Wrap"
+                 Margin="10,80,10,0" VerticalAlignment="Top" Height="150"/>
+        <Button x:Name="przycisk_szyfruj" Content="Zaszyfruj"
+                Background="#ADD8E6" Width="120" Height="35"
+                Margin="10,240,0,0" VerticalAlignment="Top"
+                Click="przycisk_szyfruj_Click"/>
+        <TextBlock Text="Tekst zaszyfrowany" Foreground="#FAEBD7"
+                   FontSize="16" Margin="10,290,0,0" HorizontalAlignment="Left"
+                   VerticalAlignment="Top"/>
+        <Border BorderBrush="#FAEBD7" BorderThickness="2" CornerRadius="10"
+                Margin="10,320,10,10">
+            <TextBox x:Name="pole_wynik" Background="Transparent"
+                     Foreground="#F0F8FF" IsReadOnly="True"
+                     BorderThickness="0" FontSize="14"
+                     TextWrapping="Wrap"/>
+        </Border>
+    </Grid>
+</Window>
